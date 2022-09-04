@@ -20,8 +20,15 @@ public class PlayerMovement : NetworkBehaviour
    private void CmdMove(Vector3 goal)
    {
       if (!NavMesh.SamplePosition(goal,out NavMeshHit hit, 1f, NavMesh.AllAreas)){return;}
-
+      
       agent.SetDestination(hit.position);
+
+   }
+
+   [Command]
+   private void CmdResetPosition()
+   {
+      agent.ResetPath();
    }
 
    public override void OnStartAuthority()
@@ -29,21 +36,17 @@ public class PlayerMovement : NetworkBehaviour
       selectHandler = GameObject.Find("UnitSelectHandler").GetComponent<SelectHandler>();
       MainCamera = Camera.main;
    }
-
-   [ClientCallback]
-   private void Update()
+   private void FixedUpdate()
    {
-      if (!hasAuthority) {return;}
-
       if (Mouse.current.rightButton.isPressed)
       {
          thisTargeter.CmdClearTarget();
       }
-      if (thisTargeter.target != null)
+      if (thisTargeter.GetTarget() != null)
       {
-         if (Vector3.Distance(transform.position, thisTargeter.target.gameObject.transform.position) > chasingRange)
+         if (Vector3.Distance(transform.position, thisTargeter.GetTarget().transform.position) > chasingRange)
          {
-            CmdMove(thisTargeter.target.transform.position);
+            agent.SetDestination(thisTargeter.GetTarget().transform.position);
          }
          else
          {
@@ -52,14 +55,14 @@ public class PlayerMovement : NetworkBehaviour
          return;
       }
       if (!Mouse.current.rightButton.isPressed){return;}
+      if (!hasAuthority) {return;}
+      
       thisTargeter.CmdClearTarget();
 
       if (agent.remainingDistance <= agent.stoppingDistance)
       {
-         agent.ResetPath();
+         CmdResetPosition();
       }
-
-
 
       Ray ray = MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
       if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity)) {return;}
@@ -70,8 +73,10 @@ public class PlayerMovement : NetworkBehaviour
       {
          //this block of code is responsible or attacking
          if (!target.gameObject.GetComponent<NetworkIdentity>().hasAuthority)
+         {
             Debug.Log("Target chosen");
             thisTargeter.CmdSetTarget(target.gameObject);
+         }
       }
    }
    

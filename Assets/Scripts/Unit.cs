@@ -9,6 +9,7 @@ public class Unit : NetworkBehaviour
 {
     [SerializeField] private UnityEvent onSelect = null;
     [SerializeField] private UnityEvent onDeselect = null;
+    [SerializeField] private Health health;
     public static event Action<Unit> OnUnitSpawn;
     public static event Action<Unit> OnUnitDeSpawn;
     public static event Action<Unit> OnUnitSpawnClient;
@@ -17,6 +18,7 @@ public class Unit : NetworkBehaviour
     public override void OnStartServer()
     {
         OnUnitSpawn?.Invoke(this);
+        health.ServerOnDie += HandleDeath;
     }
     public override void OnStopServer()
     {
@@ -46,4 +48,10 @@ public class Unit : NetworkBehaviour
     {
         onDeselect?.Invoke();
     }
+
+    private void HandleDeath(Health _health)
+    {
+        OnUnitDeSpawn.Invoke(this);
+    }
+    
 }
