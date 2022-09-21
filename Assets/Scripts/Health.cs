@@ -10,6 +10,8 @@ public class Health : NetworkBehaviour
   [SyncVar (hook = nameof(HandleHealthChange))]
   [SerializeField] float CurrentHealth;
 
+  private bool _youOnlyDieOnce = true;
+
   public event Action<Health> ServerOnDie;
   public event Action<float, float> ClientHandleHPChange ; 
 
@@ -22,8 +24,9 @@ public class Health : NetworkBehaviour
   {
     CurrentHealth -= damage;
     Mathf.Clamp(CurrentHealth, 0, startHealthPoints);
-    if (CurrentHealth == 0)
+    if (CurrentHealth == 0 && _youOnlyDieOnce)
     {
+      _youOnlyDieOnce = false;
       ServerOnDie?.Invoke(this);
       Debug.Log("Object destroyed");
       

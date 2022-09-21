@@ -63,4 +63,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  PossibleeBuilds:
+  - {fileID: 7777613799501342572, guid: b3aa73a6e9031a74e9d8b52bb502b315, type: 3}
+  - {fileID: 7586374324888965708, guid: a23c10e276c5517418068890507ba267, type: 3}
   myUnitList: []
+  myBuildingList: []
+  PylonRange: 10
+  Money: 100

@@ -278,6 +278,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  health: {fileID: 1521290218490841338}
 --- !u!65 &3433869849567328966
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -338,7 +339,7 @@ MonoBehaviour:
   syncInterval: 0.1
   BulletSpawn: {fileID: 2732162326103952231}
   BulletPrefab: {fileID: 6372805093839618169, guid: d8b42db0d02bf0a4881418b1e889a57e, type: 3}
-  BulletSpeed: 0.1
+  BulletSpeed: 0.05
   damage: 1
   targeter: {fileID: 6442294647475326855}
   FireRate: 1
@@ -359,6 +360,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   startHealthPoints: 100
+  CurrentHealth: 0
 --- !u!114 &5304613921725242432
 MonoBehaviour:
   m_ObjectHideFlags: 0

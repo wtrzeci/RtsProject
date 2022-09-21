@@ -23,6 +23,7 @@ public class Unit : NetworkBehaviour
     public override void OnStopServer()
     {
         OnUnitDeSpawn?.Invoke(this);
+        health.ServerOnDie -= HandleDeath;
     }
 
     public override void OnStartClient()
@@ -51,7 +52,8 @@ public class Unit : NetworkBehaviour
 
     private void HandleDeath(Health _health)
     {
-        OnUnitDeSpawn.Invoke(this);
+        OnUnitDeSpawn?.Invoke(this);
+        NetworkServer.Destroy(this.gameObject);
     }
     
 }

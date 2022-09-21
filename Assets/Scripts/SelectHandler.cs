@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
@@ -17,16 +18,34 @@ public class SelectHandler : NetworkBehaviour
     [SerializeField] private Vector2 SelectionBoxStartPosition;
 
     private MyRtsPlayer player;
+
+    private bool GameIsRunning = true;
+
+    private bool IsBuilding = false;
     // Start is called before the first frame update
     void Start()
     {
         player = NetworkClient.connection.identity.GetComponent<MyRtsPlayer>();
         mainCamera = Camera.main;
+        GameLoopHandler.GameEnded += OnGameStop;
+        BuildingMenuUi.OnBuildingSelectStart += StartBuilding;
+        BuildingMenuUi.OnBuildingSelectEnd += StopBuilding;
+
+
+    }
+
+    private void OnDestroy()
+    {
+        GameLoopHandler.GameEnded -= OnGameStop;
+        BuildingMenuUi.OnBuildingSelectStart -= StartBuilding;
+        BuildingMenuUi.OnBuildingSelectEnd -= StopBuilding;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!GameIsRunning){return;}
+        if (IsBuilding) { return; }
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
            StartSelectionArea();
@@ -119,5 +138,23 @@ public class SelectHandler : NetworkBehaviour
             }
 
         }
-}
+    }
+
+    private void OnGameStop()
+    {
+        GameIsRunning = false;
+    }
+
+    private void StartBuilding(int PlayerId)
+    {
+        IsBuilding = true;
+
+
+    }
+    private void StopBuilding(int PlayerID)
+    {
+        IsBuilding = false;
+
+    }
+
 }

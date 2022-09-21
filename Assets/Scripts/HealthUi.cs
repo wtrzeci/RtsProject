@@ -11,7 +11,7 @@ public class HealthUi : MonoBehaviour
 
    private void Awake()
    {
-
+        health.gameObject.SetActive(false);
       health.ClientHandleHPChange += ChangeBar;
    }
 
@@ -22,7 +22,7 @@ public class HealthUi : MonoBehaviour
 
    private void ChangeBar(float currentHealth,float maxHealth)
    {
+        health.gameObject.SetActive(true);
       healthBar.fillAmount = currentHealth / maxHealth;
-
    }
 }

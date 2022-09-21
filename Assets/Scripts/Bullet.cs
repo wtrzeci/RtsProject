@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Telepathy;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour
@@ -12,7 +13,7 @@ public class Bullet : NetworkBehaviour
     
     private void Move(Targetable Target)
     {
-        if (target == null  ){return;}
+        if (target == null  ){NetworkServer.Destroy(this.gameObject);}
         transform.position = Vector3.MoveTowards(this.transform.position, Target.AimPoint().position, BulletSpeed);
         if (Vector3.Distance(transform.position, Target.AimPoint().position) < 0.2f)
         {
