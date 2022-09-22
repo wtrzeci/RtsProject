@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\HealthUi.cs" />
     <Compile Include="Assets\Scripts\SelectHandler.cs" />
+    <Compile Include="Assets\CameraScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll" />
